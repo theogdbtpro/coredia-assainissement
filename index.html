@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coredia — Assainissement Professionnel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0a1628; --navy-mid: #112040; --blue: #1a56db; --blue-light: #3b82f6;
+      --cyan: #06b6d4; --white: #f0f4ff; --grey: #8a9bbf;
+      --card-bg: rgba(17, 32, 64, 0.7); --border: rgba(59, 130, 246, 0.15);
+    }
+    html { scroll-behavior: smooth; background-color: #0a1628; }
+    body { font-family: 'DM Sans', sans-serif; background-color: var(--navy); color: var(--white); overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.4;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(10, 22, 40, 0.9); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.03em; color: var(--white); }
+    .logo span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-cta { background: var(--blue) !important; color: #fff !important; padding: 0.55rem 1.4rem; border-radius: 4px; }
+    .nav-cta:hover { background: var(--blue-light) !important; }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: flex-start;
+      padding: 14rem 4rem 0;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+    .hero-orb {
+      position: absolute; right: 10%; top: 50%; transform: translateY(-50%);
+      width: 600px; height: 600px; border-radius: 50%; pointer-events: none;
+      background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, rgba(26,86,219,0.05) 40%, transparent 70%);
+      animation: pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:translateY(-50%) scale(1);opacity:.7} 50%{transform:translateY(-50%) scale(1.08);opacity:1} }
+    .hero-content { position: relative; z-index: 2; max-width: 700px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3);
+      padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan);
+      margin-bottom: 1.8rem; animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge::before { content:''; width:6px; height:6px; background:var(--cyan); border-radius:50%; animation:blink 1.5s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    h1 { font-family:'Syne',sans-serif; font-size:clamp(3rem,5.5vw,5.5rem); font-weight:800; line-height:1.02; letter-spacing:-0.04em; margin-bottom:1.5rem; animation:fadeUp 0.8s 0.1s ease both; }
+    h1 .accent { color:var(--cyan); }
+    .hero-desc { font-size:1.1rem; font-weight:300; color:var(--grey); line-height:1.7; max-width:500px; margin-bottom:2.5rem; animation:fadeUp 0.8s 0.2s ease both; }
+    .hero-actions { display:flex; gap:1rem; animation:fadeUp 0.8s 0.3s ease both; }
+    .btn-primary { display:inline-flex; align-items:center; gap:0.5rem; background:var(--blue); color:#fff; padding:0.85rem 2rem; border-radius:6px; font-weight:500; font-size:0.95rem; text-decoration:none; transition:background 0.2s,transform 0.2s; }
+    .btn-primary:hover { background:var(--blue-light); transform:translateY(-2px); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:0.5rem; border:1px solid var(--border); color:var(--grey); padding:0.85rem 2rem; border-radius:6px; font-weight:500; font-size:0.95rem; text-decoration:none; transition:border-color 0.2s,color 0.2s; }
+    .btn-secondary:hover { border-color:var(--cyan); color:var(--cyan); }
+    .hero-stats { position:absolute; bottom:1.5rem; left:4rem; right:4rem; display:flex; gap:3rem; z-index:2; animation:fadeUp 0.8s 0.5s ease both; }
+    .stat { border-left:2px solid var(--cyan); padding-left:1rem; }
+    .stat-num { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--white); }
+    .stat-label { font-size:0.8rem; color:var(--grey); margin-top:0.1rem; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    /* TEAM */
+    .hero-team {
+      position: absolute;
+      top: 44%; left: 4rem; right: 4rem;
+      z-index: 2;
+      animation: fadeUp 0.8s 0.55s ease both;
+    }
+    .hero-team-title {
+      font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:600;
+      letter-spacing:0.18em; text-transform:uppercase; color:var(--cyan);
+      margin-bottom:1rem;
+    }
+    .hero-team-grid { display: flex; gap: 1rem; }
+    .team-member-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem; flex: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      transition: border-color 0.3s; min-width: 0;
+    }
+    .team-member-card:hover { border-color: rgba(6,182,212,0.35); }
+    .team-member-photo {
+      width: 100%; aspect-ratio: 4/3;
+      border: 2px dashed rgba(6,182,212,0.35); border-radius: 8px;
+      display: flex; flex-direction:column; align-items: center; justify-content: center;
+      gap: 0.3rem; background: rgba(6,182,212,0.04);
+      font-size: 0.65rem; color: rgba(255,255,255,0.25); text-align:center;
+    }
+    .team-member-photo .ph-icon { font-size: 1.4rem; opacity:0.3; }
+    .team-member-name { font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; color:var(--white); text-align:center; }
+    .team-member-role { font-size:0.72rem; color:var(--cyan); text-align:center; opacity:0.8; }
+
+    /* CAMION */
+    .hero-camion {
+      position: absolute;
+      top: 72%; left: 4rem; right: 4rem;
+      z-index: 2;
+      animation: fadeUp 0.8s 0.65s ease both;
+    }
+    .camion-placeholder {
+      border: 2px dashed rgba(6,182,212,0.4); border-radius: 12px; height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(6,182,212,0.04);
+      transition: border-color 0.3s;
+    }
+    .camion-placeholder:hover { border-color: rgba(6,182,212,0.7); }
+    .camion-inner { display: flex; align-items: center; gap: 2rem; padding: 0 2rem; }
+    .camion-inner .ph-icon { font-size: 2rem; opacity: 0.4; }
+    .camion-text h4 { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--white); margin-bottom:0.3rem; }
+    .camion-text p { font-size:0.8rem; color:var(--grey); line-height:1.5; }
+
+    /* SECTIONS */
+    section { padding:6rem 4rem; position:relative; z-index:1; }
+    .section-label { font-size:0.72rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.8rem; }
+    h2 { font-family:'Syne',sans-serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:800; letter-spacing:-0.03em; line-height:1.1; margin-bottom:1.2rem; }
+    .section-sub { font-size:1rem; color:var(--grey); line-height:1.7; max-width:520px; margin-bottom:3.5rem; }
+
+    /* SERVICES */
+    #services { background:rgba(17,32,64,0.3); }
+    .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .service-card { background:var(--card-bg); padding:2.5rem 2rem; position:relative; overflow:hidden; transition:background 0.3s; cursor:pointer; }
+    .service-card:hover { background:rgba(26,86,219,0.12); }
+    .service-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:linear-gradient(90deg,var(--blue),var(--cyan)); transform:scaleX(0); transform-origin:left; transition:transform 0.4s ease; }
+    .service-card:hover::before { transform:scaleX(1); }
+    .service-icon { width:48px;height:48px; background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:1.5rem; transition:background 0.3s; }
+    .service-card:hover .service-icon { background:rgba(6,182,212,0.2); }
+    .service-card h3 { font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700; margin-bottom:0.7rem; color:var(--white); }
+    .service-card p { font-size:0.875rem; color:var(--grey); line-height:1.6; }
+    .service-num { position:absolute; top:1.5rem;right:1.8rem; font-family:'Syne',sans-serif; font-size:0.7rem; color:rgba(255,255,255,0.1); font-weight:800; letter-spacing:0.1em; }
+    .learn-more { display:inline-flex; align-items:center; gap:0.4rem; margin-top:1rem; font-size:0.78rem; color:var(--cyan); font-weight:500; letter-spacing:0.05em; opacity:0.7; transition:opacity 0.2s; }
+    .service-card:hover .learn-more { opacity:1; }
+
+    /* WHY */
+    #pourquoi { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center; }
+    .why-card-main { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:2.5rem; }
+    .why-diagram { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+    .why-mini { background:rgba(6,182,212,0.06); border:1px solid rgba(6,182,212,0.15); border-radius:10px; padding:1.2rem; text-align:center; }
+    .why-mini-icon { font-size:1.5rem; margin-bottom:0.5rem; }
+    .why-mini-label { font-size:0.75rem; color:var(--grey); }
+    .why-visual { position:relative; }
+    .why-badge-float { position:absolute; bottom:-1.5rem;right:-1.5rem; background:var(--blue); border-radius:12px; padding:1.2rem 1.5rem; text-align:center; box-shadow:0 20px 50px rgba(26,86,219,0.4); }
+    .why-badge-float .num { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; }
+    .why-badge-float .lbl { font-size:0.7rem; color:rgba(255,255,255,0.7); }
+    .why-list { list-style:none; display:flex; flex-direction:column; gap:1.2rem; }
+    .why-item { display:flex; align-items:flex-start; gap:1rem; padding:1.2rem 1.5rem; background:var(--card-bg); border:1px solid var(--border); border-radius:10px; transition:border-color 0.3s; }
+    .why-item:hover { border-color:rgba(6,182,212,0.3); }
+    .why-check { width:24px;height:24px; background:rgba(6,182,212,0.15); border-radius:50%; display:flex;align-items:center;justify-content:center; font-size:0.7rem; flex-shrink:0; margin-top:2px; }
+    .why-item-text h4 { font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; margin-bottom:0.2rem; }
+    .why-item-text p { font-size:0.825rem; color:var(--grey); }
+
+    /* CONTACT */
+    #contact { background:rgba(17,32,64,0.5); }
+    .contact-wrapper { display:grid; grid-template-columns:1fr 1.3fr; gap:4rem; align-items:start; }
+    .contact-info { display:flex; flex-direction:column; gap:1.5rem; }
+    .info-block { display:flex; align-items:flex-start; gap:1rem; padding:1.2rem 1.5rem; background:var(--card-bg); border:1px solid var(--border); border-radius:10px; }
+    .info-icon { width:40px;height:40px; background:rgba(6,182,212,0.1); border-radius:8px; display:flex;align-items:center;justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .info-block h4 { font-size:0.75rem; color:var(--grey); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem; }
+    .info-block p,.info-block a { font-size:0.95rem; color:var(--white); text-decoration:none; }
+    .info-block a:hover { color:var(--cyan); }
+    .contact-form { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:2.5rem; }
+    .contact-form h3 { font-family:'Syne',sans-serif; font-size:1.3rem; font-weight:700; margin-bottom:1.8rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .form-group { margin-bottom:1.2rem; }
+    .form-group label { display:block; font-size:0.75rem; color:var(--grey); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem; }
+    .form-group input,.form-group select,.form-group textarea { width:100%; background:rgba(10,22,40,0.6); border:1px solid var(--border); border-radius:6px; padding:0.75rem 1rem; color:var(--white); font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s; }
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:var(--cyan); }
+    .form-group select option { background:var(--navy-mid); }
+    .form-group textarea { resize:vertical; min-height:110px; }
+    .form-submit { width:100%; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:0.9rem; font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.05em; cursor:pointer; transition:background 0.2s,transform 0.2s; }
+    .form-submit:hover { background:var(--blue-light); transform:translateY(-2px); }
+
+    /* FOOTER */
+    footer { border-top:1px solid var(--border); padding:2.5rem 4rem; display:flex; align-items:center; justify-content:space-between; position:relative; z-index:1; }
+    footer .logo { font-size:1.1rem; }
+    footer p { font-size:0.8rem; color:var(--grey); }
+
+    /* REVEAL */
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(5,12,28,0.88); backdrop-filter:blur(14px); z-index:999; display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:#0d1e3a; border:1px solid rgba(59,130,246,0.25); border-radius:16px; max-width:720px; width:100%; max-height:85vh; overflow-y:auto; padding:2.5rem; position:relative; transform:translateY(20px); transition:transform 0.3s ease; scrollbar-width:thin; scrollbar-color:var(--blue) transparent; }
+    .modal-overlay.open .modal { transform:translateY(0); }
+    .modal-close { position:absolute; top:1.2rem;right:1.2rem; background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--grey); width:34px;height:34px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex;align-items:center;justify-content:center; transition:background 0.2s,color 0.2s; }
+    .modal-close:hover { background:rgba(255,255,255,0.12); color:var(--white); }
+    .modal-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.8rem; padding-bottom:1.5rem; border-bottom:1px solid var(--border); }
+    .modal-icon { width:52px;height:52px; background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.25); border-radius:12px; display:flex;align-items:center;justify-content:center; font-size:1.5rem; flex-shrink:0; }
+    .modal-header h2 { font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:-0.02em; margin:0; }
+    .modal-subtitle { font-size:0.72rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.4rem; }
+    .modal-section { margin-bottom:2rem; }
+    .modal-section h3 { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--white); margin-bottom:0.7rem; padding-left:0.8rem; border-left:2px solid var(--cyan); }
+    .modal-section p { font-size:0.9rem; color:var(--grey); line-height:1.75; }
+    .modal-section ul { list-style:none; margin-top:0.6rem; display:flex; flex-direction:column; gap:0.4rem; }
+    .modal-section ul li { font-size:0.875rem; color:var(--grey); padding-left:1.2rem; position:relative; }
+    .modal-section ul li::before { content:'→'; position:absolute; left:0; color:var(--cyan); font-size:0.75rem; }
+    .modal-norm { display:inline-flex; align-items:center; gap:0.5rem; background:rgba(26,86,219,0.12); border:1px solid rgba(26,86,219,0.25); border-radius:6px; padding:0.5rem 1rem; font-size:0.78rem; color:var(--blue-light); font-weight:500; margin-top:0.8rem; }
+    .modal-cta { display:inline-flex; align-items:center; gap:0.5rem; background:var(--blue); color:#fff; padding:0.75rem 1.8rem; border-radius:6px; font-weight:600; font-size:0.9rem; text-decoration:none; margin-top:1.5rem; transition:background 0.2s; }
+    .modal-cta:hover { background:var(--blue-light); }
+
+    /* RESPONSIVE */
+    @media (max-width:900px) {
+      nav { padding:1rem 1.5rem; } .nav-links { display:none; }
+      section { padding:4rem 1.5rem; }
+      .hero { padding:8rem 1.5rem 6rem; min-height:auto; display:block; }
+      h1 { font-size:2.2rem; }
+      .hero-stats { position:relative; bottom:auto; left:auto; right:auto; margin-top:2.5rem; flex-wrap:wrap; gap:1.5rem; }
+      .hero-team { display:none; }
+      .hero-camion { display:none; }
+      .services-grid { grid-template-columns:1fr; }
+      #pourquoi { grid-template-columns:1fr; gap:3rem; }
+      .why-badge-float { position:relative;bottom:auto;right:auto;margin-top:1rem;display:inline-block; }
+      .contact-wrapper { grid-template-columns:1fr; } .form-row { grid-template-columns:1fr; }
+      footer { flex-direction:column;gap:1rem;text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">CORE<span>DIA</span></div>
+    <ul class="nav-links">
+      <li><a href="#services">Prestations</a></li>
+      <li><a href="#pourquoi">Notre expertise</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="tel:0619900431" class="nav-cta">📞 Appeler</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="accueil">
+    <div class="hero-orb"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Marne (51) — Expertise certifiée</div>
+      <h1>L'assainissement<br/>de <span class="accent">précision.</span></h1>
+      <p class="hero-desc">Inspection, diagnostic et réhabilitation de réseaux d'assainissement dans la Marne. Interventions techniques avec les équipements les plus avancés du secteur.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Demander un devis →</a>
+        <a href="#services" class="btn-secondary">Nos prestations</a>
+      </div>
+    </div>
+
+    <div class="hero-team">
+      <div class="hero-team-title">Notre équipe</div>
+      <div class="hero-team-grid">
+        <div class="team-member-card">
+          <div class="team-member-photo"><div class="ph-icon">📷</div>Photo</div>
+          <div class="team-member-name">Prénom Nom</div>
+          <div class="team-member-role">Gérant</div>
+        </div>
+        <div class="team-member-card">
+          <div class="team-member-photo"><div class="ph-icon">📷</div>Photo</div>
+          <div class="team-member-name">Prénom Nom</div>
+          <div class="team-member-role">Technicien ITV</div>
+        </div>
+        <div class="team-member-card">
+          <div class="team-member-photo"><div class="ph-icon">📷</div>Photo</div>
+          <div class="team-member-name">Prénom Nom</div>
+          <div class="team-member-role">Opérateur curage</div>
+        </div>
+        <div class="team-member-card">
+          <div class="team-member-photo"><div class="ph-icon">📷</div>Photo</div>
+          <div class="team-member-name">Prénom Nom</div>
+          <div class="team-member-role">Expert géodétection</div>
+        </div>
+        <div class="team-member-card">
+          <div class="team-member-photo"><div class="ph-icon">📷</div>Photo</div>
+          <div class="team-member-name">Prénom Nom</div>
+          <div class="team-member-role">Technicien réseaux</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-camion">
+      <div class="camion-placeholder">
+        <div class="camion-inner">
+          <div class="ph-icon">🚛</div>
+          <div class="camion-text">
+            <h4>Nos équipements</h4>
+            <p>Photo du camion Coredia à insérer ici — hydrocureur haute pression, caméra de réseaux embarquée</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">8</div><div class="stat-label">Prestations spécialisées</div></div>
+      <div class="stat"><div class="stat-num">51</div><div class="stat-label">Département Marne</div></div>
+      <div class="stat"><div class="stat-num">2</div><div class="stat-label">Lignes directes</div></div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="reveal">
+      <div class="section-label">Nos prestations</div>
+      <h2>Un savoir-faire<br/>complet du réseau</h2>
+      <p class="section-sub">De l'inspection à la réparation, Coredia maîtrise l'intégralité de la chaîne technique de l'assainissement.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card" onclick="openModal('itv')"><span class="service-num">01</span><div class="service-icon">📷</div><h3>Inspection Télévisée</h3><p>Diagnostic précis de l'état intérieur des canalisations par caméra HD. Détection de fissures, obstructions et défauts structurels sans travaux invasifs.</p><span class="learn-more">En savoir plus →</span></div>
+      <div class="service-card" onclick="openModal('etancheite')"><span class="service-num">02</span><div class="service-icon">🔍</div><h3>Contrôle d'Étanchéité</h3><p>Vérification de la conformité des réseaux par test d'étanchéité. Conformité aux normes en vigueur pour cessions immobilières et raccordements.</p><span class="learn-more">En savoir plus →</span></div>
+      <div class="service-card" onclick="openModal('compactage')"><span class="service-num">03</span><div class="service-icon">⚙️</div><h3>Compactage</h3><p>Compactage et stabilisation des sols autour des réseaux enterrés. Prévention des tassements différentiels et protection à long terme des canalisations.</p><span class="learn-more">En savoir plus →</span></div>
+      <div class="service-card" onclick="openModal('fumee')"><span class="service-num">04</span><div class="service-icon">💨</div><h3>Tests à la Fumée</h3><p>Détection des entrées d'eaux parasites et des anomalies de réseau par injection de fumée inerte. Méthode rapide et non destructive.</p><span class="learn-more">En savoir plus →</span></div>
+      <div class="service-card" onclick="openModal('manchettes')"><span class="service-num">05</span><div class="service-icon">🔧</div><h3>Réparation par Manchettes</h3><p>Réhabilitation des conduites endommagées par pose de manchettes QUICKLOCK sans tranchée. Solution durable du Ø 150 au Ø 1800.</p><span class="learn-more">En savoir plus →</span></div>
+      <div class="service-card" onclick="openModal('curage')"><span class="service-num">06</span><div class="service-icon">🌊</div><h3>Curage de Réseaux</h3><p>Nettoyage haute pression et hydrocurage des réseaux EU et EP, bacs à graisse et fosses septiques dans le respect des réglementations.</p><span class="learn-more">En savoir plus →</span></div>
+      <div class="service-card" onclick="openModal('fuites')"><span class="service-num">07</span><div class="service-icon">💧</div><h3>Détection de Fuites</h3><p>Localisation par gaz traçeur et corrélation acoustique. Aucun problème sanitaire, efficace même sous dalle ou terrain complexe.</p><span class="learn-more">En savoir plus →</span></div>
+      <div class="service-card" onclick="openModal('geodetection')"><span class="service-num">08</span><div class="service-icon">📡</div><h3>Géodétection</h3><p>Prospection des sous-sols par géoradar (ondes magnétiques hautes fréquences). Technique non destructive pour cartographier les réseaux enterrés.</p><span class="learn-more">En savoir plus →</span></div>
+    </div>
+  </section>
+
+  <section id="pourquoi" style="padding:6rem 4rem;">
+    <div class="why-visual reveal">
+      <div class="why-card-main">
+        <div class="section-label">Nos atouts</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem;">Équipement & Méthodes</h3>
+        <p style="font-size:0.85rem;color:var(--grey);line-height:1.6;">Des outils de diagnostic de dernière génération pour des interventions précises et documentées.</p>
+        <div class="why-diagram">
+          <div class="why-mini"><div class="why-mini-icon">📹</div><div class="why-mini-label">Caméra de réseaux</div></div>
+          <div class="why-mini"><div class="why-mini-icon">💧</div><div class="why-mini-label">Hydro-curage</div></div>
+          <div class="why-mini"><div class="why-mini-icon">📊</div><div class="why-mini-label">DVD interactif</div></div>
+          <div class="why-mini"><div class="why-mini-icon">⚡</div><div class="why-mini-label">Intervention rapide</div></div>
+        </div>
+      </div>
+      <div class="why-badge-float"><div class="num">🏆</div><div class="lbl">SAS agréée<br/>Marne (51)</div></div>
+    </div>
+    <div class="reveal">
+      <div class="section-label">Pourquoi Coredia</div>
+      <h2>L'expertise au<br/>service de votre réseau</h2>
+      <p class="section-sub">Nous intervenons pour les particuliers, collectivités et professionnels avec rigueur et transparence.</p>
+      <ul class="why-list">
+        <li class="why-item"><div class="why-check">✓</div><div class="why-item-text"><h4>Diagnostic sans surprise</h4><p>Inspection télévisée avec rapport illustré remis systématiquement après chaque intervention.</p></div></li>
+        <li class="why-item"><div class="why-check">✓</div><div class="why-item-text"><h4>Techniques sans tranchée</h4><p>Réhabilitation par manchettes QUICKLOCK et tests non-invasifs : moins de perturbations, moins de coûts.</p></div></li>
+        <li class="why-item"><div class="why-check">✓</div><div class="why-item-text"><h4>Conformité garantie</h4><p>Contrôles d'étanchéité et attestations conformes aux exigences des collectivités et notaires.</p></div></li>
+        <li class="why-item"><div class="why-check">✓</div><div class="why-item-text"><h4>Disponibilité & réactivité</h4><p>Deux lignes directes pour un accès rapide à nos techniciens, basés en Marne (51).</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="reveal" style="margin-bottom:3rem;">
+      <div class="section-label">Nous contacter</div>
+      <h2>Parlons de votre projet</h2>
+      <p class="section-sub">Devis gratuit et sans engagement. Réponse sous 24h.</p>
+    </div>
+    <div class="contact-wrapper reveal">
+      <div class="contact-info">
+        <div class="info-block"><div class="info-icon">📍</div><div><h4>Adresse</h4><p>16 rue Mercure<br/>51110 Warmeriville</p></div></div>
+        <div class="info-block"><div class="info-icon">📞</div><div><h4>Téléphone</h4><a href="tel:0619900431">06 19 90 04 31</a><br/><a href="tel:0619427298">06 19 42 72 98</a></div></div>
+        <div class="info-block"><div class="info-icon">✉️</div><div><h4>Email</h4><a href="mailto:coredia@sfr.fr">coredia@sfr.fr</a></div></div>
+        <div class="info-block"><div class="info-icon">🗺️</div><div><h4>Zone d'intervention</h4><p>Marne (51) et départements limitrophes</p></div></div>
+      </div>
+      <div class="contact-form">
+        <h3>Demande de devis gratuit</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Nom</label><input type="text" placeholder="Votre nom" /></div>
+          <div class="form-group"><label>Téléphone</label><input type="tel" placeholder="06 XX XX XX XX" /></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" placeholder="votre@email.fr" /></div>
+        <div class="form-group">
+          <label>Prestation souhaitée</label>
+          <select>
+            <option value="" disabled selected>Choisir une prestation</option>
+            <option>Inspection Télévisée</option><option>Contrôle d'Étanchéité</option>
+            <option>Compactage</option><option>Tests à la Fumée</option>
+            <option>Réparation par Manchettes</option><option>Curage de Réseaux</option>
+            <option>Détection de Fuites</option><option>Géodétection</option>
+            <option>Autre / Je ne sais pas encore</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Description du besoin</label><textarea placeholder="Décrivez votre situation ou votre problème..."></textarea></div>
+        <button class="form-submit">Envoyer la demande →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">CORE<span>DIA</span></div>
+    <p>© 2025 SAS Coredia — Assainissement professionnel en Marne (51)</p>
+    <p>coredia@sfr.fr</p>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBg(event)">
+    <div class="modal" id="modalContent">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const modals = {
+      itv: { icon:'📷', title:'Inspection Télévisée', content:`<div class="modal-section"><p>L'inspection télévisée permet d'examiner l'intérieur des canalisations grâce à une caméra HD embarquée.</p></div><div class="modal-section"><h3>Inspection Télévisée de Réception</h3><p><strong style="color:var(--white)">Réception de travaux neufs</strong></p><p style="margin-top:0.5rem">Les contrôles consistent en une inspection des ouvrages pour vérifier les diamètres, les matériaux et les raccordements de branchements et les éventuelles anomalies. Les examens sont codés selon la norme NF 13508-2. Les inspections sont numérisées (DVD interactif avec rapport d'inspection).</p><div class="modal-norm">📋 Norme NF EN 13508-2</div></div><div class="modal-section"><h3>Inspection Télévisée de Diagnostic</h3><p>Le diagnostic permet de vérifier le fonctionnement et l'état des réseaux existants, observer et localiser les anomalies sur les ouvrages.</p><p style="margin-top:0.6rem">Exemple : Défaut de branchements, géométrique, d'infiltration, d'assemblage et défaut de structure. Ces inspections font connaître au maître d'œuvre l'état des réseaux afin de pouvoir programmer des travaux préventifs ou curatifs.</p><div class="modal-norm">📋 Norme NF EN 13508-2</div></div>` },
+      etancheite: { icon:'🔍', title:"Contrôle d'Étanchéité", content:`<div class="modal-section"><p>Les contrôles d'étanchéité vérifient la conformité des réseaux neufs ou existants avant mise en service ou lors de transactions immobilières.</p></div><div class="modal-section"><h3>Principe des tests</h3><p>Ces tests permettent de vérifier l'étanchéité des réseaux gravitaires ou sous pression. Selon les ouvrages, ces essais sont réalisés à l'eau ou à l'air.</p><ul style="margin-top:0.8rem"><li>Protocole LB / LC / LD selon la norme NF EN 1610</li><li>Protocole W selon la norme NF EN 1610</li><li>Tests applicables aux réseaux gravitaires et sous pression</li></ul><div class="modal-norm">📋 Norme NF EN 1610</div></div>` },
+      compactage: { icon:'⚙️', title:'Compactage', content:`<div class="modal-section"><p>Le contrôle de compactage est une étape essentielle après remblayage des tranchées.</p></div><div class="modal-section"><h3>Déroulement du contrôle</h3><p>Les contrôles sont réalisés après remblayage des tranchées et avant les ITV et les tests d'étanchéité. Ces essais sont réalisés au pénétromètre. Il permet de garantir la bonne tenue des réfections de voirie et l'absence de tassement du sol dans le futur.</p></div><div class="modal-section"><h3>Certification du matériel</h3><p>Matériel étalonné tous les ans par le Ministère de l'Équipement.</p><div class="modal-norm">📋 Norme NF P 94-63</div></div>` },
+      fumee: { icon:'💨', title:'Tests à la Fumée et aux Colorants', content:`<div class="modal-section"><p>Méthode rapide et non destructive pour identifier les anomalies de raccordement sur les réseaux séparatifs.</p></div><div class="modal-section"><h3>Principe et application</h3><p>Ces procédés permettent de localiser et de détecter les erreurs ou anomalies sur les réseaux séparatifs. Résultat visible rapidement au moyen d'une photographie du bâtiment en défaut de raccordement.</p></div><div class="modal-section"><h3>Avantages</h3><ul><li>Aucun terrassement nécessaire</li><li>Résultats immédiats et visuels</li><li>Identification des mauvais branchements EU / EP</li><li>Documentation photographique fournie</li></ul></div>` },
+      manchettes: { icon:'🔧', title:'Réparation par Manchettes', content:`<div class="modal-section"><p>Solution de réhabilitation sans tranchée pour réparer les canalisations endommagées tout en maintenant le service.</p></div><div class="modal-section"><h3>Système QUICKLOCK</h3><p>COREDIA effectue les réparations par la mise en place de manchettes QUICKLOCK du Ø 150 au Ø 1800, sans terrassement tout en laissant passer les effluents.</p></div><div class="modal-section"><h3>Certifications</h3><ul><li>Avis technique CSTB</li><li>Agrément ACS (aptitude au contact avec l'eau potable)</li><li>Diamètres disponibles : Ø 150 à Ø 1800</li></ul></div>` },
+      curage: { icon:'🌊', title:'Curage de Réseaux', content:`<div class="modal-section"><p>Nettoyage et entretien des réseaux d'assainissement par hydrocurage haute pression, dans le strict respect des réglementations environnementales.</p></div><div class="modal-section"><h3>Méthode d'intervention</h3><p>Le nettoyage est effectué dans le respect de la réglementation et vérifié à l'aide d'une caméra après intervention. L'élimination des déchets est effectuée par des filières de traitement agréées.</p></div><div class="modal-section"><h3>Nos prestations de curage</h3><ul><li>Curage de réseaux eaux usées (EU)</li><li>Curage de réseaux eaux pluviales (EP)</li><li>Nettoyage de bacs à graisse</li><li>Vidange de fosses septiques</li></ul></div>` },
+      fuites: { icon:'💧', title:'Détection de Fuites', content:`<div class="modal-section"><p>Localisation précise des fuites sur les réseaux d'eau potable et d'assainissement, sans travaux destructifs.</p></div><div class="modal-section"><h3>Détection par gaz traçeur</h3><p>Le gaz utilisé est un mélange d'hydrogène et d'azote. Il n'y a aucun problème sanitaire à les utiliser sur les réseaux d'eau potable.</p></div><div class="modal-section"><h3>Détection par corrélation acoustique</h3><p>Très efficace pour localiser une fuite sous une dalle ou compléter les autres techniques.</p></div>` },
+      geodetection: { icon:'📡', title:'Géodétection', content:`<div class="modal-section"><p>Détection et cartographie des réseaux souterrains par géoradar. Technique non destructive indispensable avant tout projet de terrassement.</p></div><div class="modal-section"><h3>Principe du géoradar</h3><p>Technique de prospection des sous-sols par ondes magnétiques hautes fréquences. Le géoradar envoie des impulsions magnétiques au moyen d'une antenne.</p></div><div class="modal-section"><h3>Domaines d'application</h3><ul><li>Environnement</li><li>Génie civil</li><li>Archéologie</li><li>Travaux Publics</li></ul></div>` }
+    };
+
+    function openModal(id) {
+      const data = modals[id]; if (!data) return;
+      document.getElementById('modalBody').innerHTML = `<div class="modal-header"><div class="modal-icon">${data.icon}</div><div><div class="modal-subtitle">Prestation Coredia</div><h2>${data.title}</h2></div></div>${data.content}<a href="#contact" class="modal-cta" onclick="closeModal()">Demander un devis →</a>`;
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+    function closeModalOnBg(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => { e.preventDefault(); document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' }); });
+    });
+  </script>
+</body>
+</html>
